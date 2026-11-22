@@ -101,6 +101,7 @@ tabela), e não valores de fatura.
 > Baseadas em Modelos de Linguagem para Geração Automática de Testes em Projetos
 > Python*. Trabalho de Conclusão de Curso (Bacharelado em Ciência da Computação),
 > Pontifícia Universidade Católica de Minas Gerais, Belo Horizonte, 2026.
+> Código disponível em: <https://github.com/Guilherme0321/TCC>.
 
 ## Licença
 
