@@ -26,7 +26,7 @@ A comparação usa dois modelos (`gpt-5-mini` e `claude-sonnet-5`) e mede:
 ## Estrutura
 
 ```
-codigo/
+./
 ├── benchmark_selector/   Etapa 1: busca e triagem dos projetos do benchmark
 │                         (297 candidatos → 22 aprovados)
 ├── pipeline_scaffold/    Etapa 2: experimento (agentes, arquiteturas, execução
@@ -78,6 +78,8 @@ O `benchmark_selector` tem instalação e uso próprios, descritos em
    `--project`, `--model` e `--reps`.
 4. **Análise:**
    `python scripts/analyze.py --jsonl output/results.jsonl --md relatorio.md --por-modelo por_modelo.md`
+   e `python scripts/rq4_por_projeto.py` para a Tabela 10 (RQ4, uma observação
+   por projeto, com correção de Benjamini-Hochberg).
 
 **Testes:** `python -m pytest -q` em `pipeline_scaffold/`, e
 `python -m pytest tests -q` em `benchmark_selector/`.
