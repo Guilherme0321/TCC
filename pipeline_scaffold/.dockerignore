@@ -1,0 +1,4 @@
+# Contexto de build contém apenas os projetos do benchmark (Dockerfile.base
+# copia benchmark/<PROJECT>). Tudo o mais fica fora do contexto.
+*
+!benchmark/

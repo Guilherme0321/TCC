@@ -1,0 +1,17 @@
+# PROMPT: RepairAgent v1
+# O código-fonte vai no PREFIXO estável/cacheável (AD-15). Escopo (AD-14): corrigir
+# ERROS DE EXECUÇÃO apenas (sintaxe, import, exceção no setup, assertion malformada).
+# NÃO otimizar cobertura nem mutação — isso é do Critic/Generator.
+
+Os testes abaixo, escritos para o código-fonte fornecido acima, NÃO executam. Corrija
+apenas o que impede a execução, preservando a intenção de cada teste. Não remova
+casos de teste; conserte-os.
+
+--- TESTES ATUAIS ---
+{current_tests}
+
+--- ERRO DE EXECUÇÃO (traceback resumido) ---
+{error_summary}
+
+Responda SOMENTE com o código Python corrigido do arquivo de teste, sem explicações
+e sem cercas de markdown.

@@ -1,0 +1,14 @@
+.venv
+.git
+work
+output
+env
+.env
+*.pyc
+__pycache__
+.pytest_cache
+.coverage
+.coverage_baseline.json
+*.log
+.vscode
+.idea

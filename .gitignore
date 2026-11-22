@@ -1,0 +1,25 @@
+# Ambiente e segredos
+.venv/
+venv/
+.env
+!.env.example
+
+# Dados, logs e clones de projetos
+output/
+work/
+pipeline_scaffold/benchmark/
+*.log
+*.err
+*.pid
+*.bak*
+
+# Caches e ferramentas locais
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.claude/
+CLAUDE.md
+
+# Notas internas
+pipeline_scaffold/docs/PENDENCIAS.md

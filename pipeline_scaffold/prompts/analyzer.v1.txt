@@ -1,0 +1,24 @@
+# PROMPT: CodeAnalyzerAgent v1
+# O código-fonte é enviado à parte, no PREFIXO estável/cacheável (AD-15). Saída
+# validada contra o schema CodeAnalysis (AD-02).
+
+Analise o código-fonte do projeto fornecido acima para orientar a geração de
+testes. Identifique funções, métodos e classes; dependências externas a mockar; e
+os casos de borda prováveis de cada símbolo.
+
+Responda SOMENTE com um JSON válido, sem cercas de markdown, exatamente neste
+formato:
+
+{
+  "symbols": [
+    {
+      "name": "<nome>",
+      "kind": "function | method | class",
+      "signature": "<assinatura>",
+      "complexity": <inteiro estimado>,
+      "edge_cases": ["<caso de borda>", "..."]
+    }
+  ],
+  "dependencies_to_mock": ["<dependência externa>", "..."],
+  "notes": "<observações curtas, opcional>"
+}

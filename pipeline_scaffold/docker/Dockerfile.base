@@ -1,0 +1,48 @@
+# Imagem base por projeto do benchmark (AD-04).
+# Build: docker build --build-arg PROJECT=<nome> -f Dockerfile.base -t tcc-<nome> .
+# Run:   docker run --rm --network none --cpus 2 --memory 2g \
+#          --read-only --tmpfs /work -u 1000:1000 tcc-<nome> ...
+FROM python:3.12-slim
+
+ARG PROJECT
+RUN useradd -m -u 1000 runner
+WORKDIR /project
+
+# O contexto de build deve conter o projeto do benchmark em ./benchmark/$PROJECT
+COPY benchmark/${PROJECT}/ /project/
+# AD-24: este RUN silenciava a falha de instalação com `2>/dev/null || true`.
+# A imagem subia SEM o pacote sob teste, o pytest morria em
+# `ModuleNotFoundError` e o pipeline creditava a falha ao modelo — 80 runs
+# (19% da coleta de 2026-08) medindo infraestrutura em vez de LLM. O build
+# agora falha alto, com a mensagem original de erro visível.
+RUN pip install --no-cache-dir -e . || \
+    pip install --no-cache-dir -r requirements.txt || { \
+        echo "ERRO (AD-24): nem 'pip install -e .' nem requirements.txt instalaram" \
+             "o projeto ${PROJECT}. A imagem NAO pode subir sem o pacote sob teste." >&2; \
+        exit 1; \
+    }
+RUN pip install --no-cache-dir pytest pytest-cov pytest-timeout mutmut
+
+# Sucesso do `pip install` NÃO prova que o pacote sob teste ficou instalado, e
+# essa é a armadilha que criou AD-24. Em `tnz`, `pip install -e .` falha (o
+# backend `versioningit` exige `.git`, ausente na cópia do benchmark) e o
+# fallback `requirements.txt` SUCEDE — instalando as dependências, não o
+# pacote. O build passava, `import tnz` funcionava a partir de /project (o
+# diretório está no cwd) e só quebrava na execução real, feita a partir de
+# /work, com `ModuleNotFoundError`.
+#
+# A verificação abaixo roda a partir de / — fora de /project — que é a
+# condição real dos testes. É o que separa "instalou" de "está importável de
+# qualquer lugar". IMPORT_NAME vem do mesmo `cov_target` que o
+# project_loader infere; vazio desliga a checagem.
+ARG IMPORT_NAME=""
+RUN if [ -n "${IMPORT_NAME}" ]; then \
+        cd / && python -c "import ${IMPORT_NAME}" || { \
+            echo "ERRO (AD-24): o pacote '${IMPORT_NAME}' de ${PROJECT} NAO e importavel" \
+                 "fora de /project. A instalacao passou mas nao instalou o pacote sob" \
+                 "teste — exatamente a falha silenciosa que matou 80 runs." >&2; \
+            exit 1; \
+        }; \
+    fi
+
+USER runner
