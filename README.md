@@ -1,8 +1,8 @@
 # Arquiteturas de agentes LLM para geração automática de testes em Python
 
-Código do Trabalho de Conclusão de Curso **"Estudo Empírico Comparativo de
-Arquiteturas Baseadas em Modelos de Linguagem para Geração Automática de Testes
-em Projetos Python"**, do Bacharelado em Ciência da Computação da PUC Minas.
+Código, *prompts*, dados e scripts de análise do estudo **"Estudo Empírico
+Comparativo de Arquiteturas Baseadas em Modelos de Linguagem para Geração
+Automática de Testes em Projetos Python"**.
 
 - **Autor:** Guilherme Otávio de Oliveira
 - **Orientador:** Prof. Wladmir Cardoso Brandão
@@ -77,20 +77,25 @@ O `benchmark_selector` tem instalação e uso próprios, descritos em
    pagas; use `--execute` para chamadas reais. Há filtros por `--arch`,
    `--project`, `--model` e `--reps`.
 4. **Análise:**
-   `python scripts/analyze.py --jsonl output/results.jsonl --md relatorio.md --por-modelo por_modelo.md`
-   e `python scripts/rq4_por_projeto.py` para a Tabela 10 (RQ4, uma observação
-   por projeto, com correção de Benjamini-Hochberg).
+   `python scripts/analyze.py --jsonl data/results_public.jsonl --md relatorio.md --por-modelo por_modelo.md`
+   e `python scripts/rq4_por_projeto.py` para a análise da RQ4 (uma observação
+   por projeto, com correção de Benjamini-Hochberg). Para reproduzir as tabelas
+   sem executar o experimento, basta o *log* público em `data/`.
 
 **Testes:** `python -m pytest -q` em `pipeline_scaffold/`, e
 `python -m pytest tests -q` em `benchmark_selector/`.
 
 ## Dados e o que não está versionado
 
-Este repositório contém apenas código, *prompts*, testes e documentação.
+O *log* completo de tentativas da coleta está em
+[`pipeline_scaffold/data/results_public.jsonl`](pipeline_scaffold/data/results_public.jsonl)
+(694 registros, um por tentativa, incluindo falhas e execuções abortadas). A única
+diferença em relação ao *log* original é a troca de um nome de usuário local em
+dois caminhos de mensagens de erro; nenhum campo usado na análise foi alterado.
 
 | Não versionado | Motivo |
 |---|---|
-| Log de execuções da coleta (`output/`) | dados da coleta |
+| Saídas locais da coleta (`output/`) | o *log* equivalente está em `data/` |
 | Clones dos projetos (`benchmark/`, `work/`) | código de terceiros, reobtido pelos *commits* fixados |
 | Arquivos `.env` | contêm chaves de API |
 
